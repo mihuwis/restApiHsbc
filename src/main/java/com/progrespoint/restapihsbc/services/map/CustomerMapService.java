@@ -6,6 +6,7 @@ import com.progrespoint.restapihsbc.services.CustomerService;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -21,12 +22,11 @@ public class CustomerMapService extends AbstractMapService<Long, Customer> imple
 
 
     @Override
-    public Customer findByNameAndId(Long id, String name) {
+    public Optional<Customer> findByNameAndId(Long id, String name) {
         return super.map.values()
                 .stream()
                 .filter(customer -> customer.getName().equals(name) && customer.getId().equals(id))
-                .findFirst()
-                .orElse(null);
+                .findFirst();
     }
 
     @Override
@@ -60,7 +60,7 @@ public class CustomerMapService extends AbstractMapService<Long, Customer> imple
     }
 
     @Override
-    public Customer findById(Long id) {
+    public Optional<Customer> findById(Long id) {
         return super.findByID(id);
     }
 

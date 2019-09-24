@@ -5,6 +5,7 @@ import com.progrespoint.restapihsbc.services.AddressService;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -26,7 +27,7 @@ public class AddressMapService extends AbstractMapService<Long, Address> impleme
     }
 
     @Override
-    public Address findById(Long id) {
+    public Optional<Address> findById(Long id) {
         return super.findByID(id);
     }
 }
