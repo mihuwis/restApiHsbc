@@ -1,4 +1,4 @@
-package com.progrespoint.restapihsbc.services;
+package com.progrespoint.restapihsbc.services.map;
 
 import com.progrespoint.restapihsbc.model.BaseEntity;
 
@@ -6,7 +6,7 @@ import java.util.*;
 
 public abstract class AbstractMapService<ID extends Long, T extends BaseEntity> {
 
-    private Map<Long, T> map = new HashMap<>();
+    protected Map<Long, T> map = new HashMap<>();
 
     Set<T> findAll(){
         return new HashSet<>(map.values());

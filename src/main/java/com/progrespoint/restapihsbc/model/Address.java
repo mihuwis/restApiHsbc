@@ -1,12 +1,13 @@
 package com.progrespoint.restapihsbc.model;
 
-public class Address {
+public class Address extends BaseEntity {
 
     private String city;
     private String street;
     private String zipCode;
 
-    public Address(String city, String street, String zipCode) {
+    public Address(Long id, String city, String street, String zipCode) {
+        super(id);
         this.city = city;
         this.street = street;
         this.zipCode = zipCode;
