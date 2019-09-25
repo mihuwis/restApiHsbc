@@ -7,7 +7,7 @@ import java.util.stream.Stream;
 
 public abstract class AbstractMapService<ID extends Long, T extends BaseEntity> {
 
-    protected Map<Long, T> map = new HashMap<>();
+    Map<Long, T> map = new HashMap<>();
 
     Stream<T> findAll(){
         return map.values().stream();
