@@ -12,6 +12,12 @@ public class Customer extends BaseEntity {
         this.address = address;
     }
 
+    public Customer(String name, Address address) {
+        super();
+        this.name = name;
+        this.address = address;
+    }
+
     public String getName() {
         return name;
     }

@@ -8,6 +8,9 @@ public class BaseEntity {
         this.id = id;
     }
 
+    public BaseEntity() {
+    }
+
     public Long getId() {
         return id;
     }

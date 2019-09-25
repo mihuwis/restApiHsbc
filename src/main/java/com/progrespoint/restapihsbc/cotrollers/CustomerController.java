@@ -66,6 +66,10 @@ public class CustomerController {
                 .withRel(rel));
     }
 
+    private void addFindCustomerByIdLink(Resources<Resource<Customer>> resources, String rel){
+
+    }
+
 
 
 }

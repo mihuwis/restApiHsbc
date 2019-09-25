@@ -25,11 +25,19 @@ public class ApplicationBootstraper implements CommandLineRunner {
 
     private void loadData() {
         Customer customer01 =
-                new Customer(1L, "Sam", new Address(1L, "Krakow", "Dluga", "11-111"));
+                new Customer("Sam", new Address(1L, "Krakow", "Dluga", "11-111"));
         customerService.save(customer01);
 
         Customer customer02 =
-                new Customer(2L, "John", new Address(2L, "Krakow", "Smolki", "22-222"));
+                new Customer("John", new Address(2L, "Krakow", "Smolki", "22-222"));
         customerService.save(customer02);
+
+        Customer customer03 =
+                new Customer("John", new Address(3L, "Wroclaw", "Dluga", "32-322"));
+        customerService.save(customer03);
+
+        Customer customer04 =
+                new Customer("Lucy", new Address(2L, "Krakow", "Smolki", "22-222"));
+        customerService.save(customer04);
     }
 }
