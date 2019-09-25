@@ -33,8 +33,7 @@ public class CustomerController {
         Resources<Resource<Customer>> resources = new Resources<>(
                 customerService.findAll().map(this::resource)
                 .collect(Collectors.toList()));
-        resources.add(linkTo(methodOn(CustomerController.class)
-        .getCustomerById(null)).withRel(REL_CUSTOMER_BY_ID));
+        addFindCustomerByIdLink(resources, REL_CUSTOMER_BY_ID);
         addFindAllCustomersLink(resources, REL_SELF);
         return ok(resources);
     }
@@ -46,6 +45,8 @@ public class CustomerController {
                 .map(this::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
+
+    @GetMapping("")
 
     private Resource<Customer> resource(Customer customer){
         Resource<Customer> customerResource = new Resource<>(customer);
@@ -67,6 +68,8 @@ public class CustomerController {
     }
 
     private void addFindCustomerByIdLink(Resources<Resource<Customer>> resources, String rel){
+        resources.add(linkTo(methodOn(CustomerController.class)
+                .getCustomerById(null)).withRel(REL_CUSTOMER_BY_ID));
 
     }
 
