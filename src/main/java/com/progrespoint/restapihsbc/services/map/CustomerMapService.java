@@ -7,8 +7,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @Profile("map")
@@ -30,15 +29,15 @@ public class CustomerMapService extends AbstractMapService<Long, Customer> imple
     }
 
     @Override
-    public Set<Customer> findAllUsersWithName(String name) {
+    public Stream<Customer> findAllUsersWithName(String name) {
         return super.map.values()
                 .stream()
-                .filter(customer -> customer.getName().equals(name))
-                .collect(Collectors.toSet());
+                .filter(customer -> customer.getName()
+                        .equals(name));
     }
 
     @Override
-    public Set<Customer> findAll() {
+    public Stream<Customer> findAll() {
         return super.findAll();
     }
 

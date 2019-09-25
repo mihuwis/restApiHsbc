@@ -17,7 +17,7 @@ public class ApplicationBootstraper implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        int count = customerService.findAll().size();
+        long count = customerService.findAll().count();
         if(count == 0){
             loadData();
         }

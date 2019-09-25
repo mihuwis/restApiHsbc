@@ -3,13 +3,14 @@ package com.progrespoint.restapihsbc.services.map;
 import com.progrespoint.restapihsbc.model.BaseEntity;
 
 import java.util.*;
+import java.util.stream.Stream;
 
 public abstract class AbstractMapService<ID extends Long, T extends BaseEntity> {
 
     protected Map<Long, T> map = new HashMap<>();
 
-    Set<T> findAll(){
-        return new HashSet<>(map.values());
+    Stream<T> findAll(){
+        return map.values().stream();
     }
 
     Optional<T> findByID(ID id){

@@ -7,12 +7,13 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Stream;
 
 @Service
 @Profile("map")
 public class AddressMapService extends AbstractMapService<Long, Address> implements AddressService {
     @Override
-    public Set<Address> findAll() {
+    public Stream<Address> findAll() {
         return super.findAll();
     }
 
