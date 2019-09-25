@@ -13,6 +13,8 @@ public class Address extends BaseEntity {
         this.zipCode = zipCode;
     }
 
+    public Address(){}
+
     public String getCity() {
         return city;
     }

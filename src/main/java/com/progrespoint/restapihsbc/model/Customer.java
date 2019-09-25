@@ -18,6 +18,8 @@ public class Customer extends BaseEntity {
         this.address = address;
     }
 
+    public Customer(){}
+
     public String getName() {
         return name;
     }

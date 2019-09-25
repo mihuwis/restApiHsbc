@@ -5,22 +5,24 @@ import com.progrespoint.restapihsbc.services.CustomerService;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.Resources;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
 @RestController
-@RequestMapping("/customers")
+@RequestMapping(value = "/customers")
 public class CustomerController {
 
     private final String REL_SELF = "self";
     private final String REL_CUSTOMER_BY_ID = "customersById";
+    private final String REL_CUSTOMERS_BY_NAME = "customersByName";
+    private final String REL_ALL_CUSTOMERS = "findAllCustomers";
+
 
     private final CustomerService customerService;
 
@@ -31,8 +33,11 @@ public class CustomerController {
     @GetMapping
     public ResponseEntity<Resources<Resource<Customer>>> getAllCustomers(){
         Resources<Resource<Customer>> resources = new Resources<>(
-                customerService.findAll().map(this::resource)
-                .collect(Collectors.toList()));
+                customerService
+                        .findAll()
+                        .map(this::resource)
+                        .collect(Collectors.toList())
+        );
         addFindCustomerByIdLink(resources, REL_CUSTOMER_BY_ID);
         addFindAllCustomersLink(resources, REL_SELF);
         return ok(resources);
@@ -46,7 +51,24 @@ public class CustomerController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @GetMapping("")
+    @GetMapping(params = "name")
+    public ResponseEntity<Resources<Resource<Customer>>> getCustomersByName(@RequestParam("name") String name){
+        Resources<Resource<Customer>> resources = new Resources<>(
+                customerService.findAllUsersWithName(name)
+                .map(this::resource)
+                .collect(Collectors.toList())
+        );
+        addFindAllCustomersLink(resources, REL_ALL_CUSTOMERS);
+//        addFindCustomersByName(resources, REL_SELF, name);
+        return ok(resources);
+    }
+
+    @PostMapping
+    public ResponseEntity<?> addCustomer(@RequestBody Customer customer){
+        Customer addedCustomer = customerService.save(customer);
+        return ResponseEntity.created(URI.create(
+                resource(addedCustomer).getLink(REL_SELF).getHref())).build();
+    }
 
     private Resource<Customer> resource(Customer customer){
         Resource<Customer> customerResource = new Resource<>(customer);
@@ -69,8 +91,13 @@ public class CustomerController {
 
     private void addFindCustomerByIdLink(Resources<Resource<Customer>> resources, String rel){
         resources.add(linkTo(methodOn(CustomerController.class)
-                .getCustomerById(null)).withRel(REL_CUSTOMER_BY_ID));
+                .getCustomerById(null)).withRel(rel));
+    }
 
+    private void addFindCustomersByName(Resources<Resource<Customer>> resources, String rel, String name){
+        resources
+                .add(linkTo(methodOn(CustomerService.class)
+                        .findAllUsersWithName(name)).withRel(rel));
     }
 
 
