@@ -15,6 +15,7 @@ class CustomerMapServiceTest {
 
     private final Long CUSTOMER_ONE_ID = 1L;
     private final Long CUSTOMER_TWO_ID = 2L;
+    private  final Long EMPTY = 0L;
 
     @BeforeEach
     void setUp() {
@@ -24,11 +25,7 @@ class CustomerMapServiceTest {
     }
 
     @Test
-    void findByNameAndId() {
-    }
-
-    @Test
-    void findAllUsersWithName() {
+    void findAllUsersWithName_CustomerGiven_ShouldMatchNameOfCustomer() {
         // When
         Customer customer = customerMapService.findAllUsersWithName("Sam").findAny().orElse(null);
 
@@ -37,7 +34,7 @@ class CustomerMapServiceTest {
     }
 
     @Test
-    void findAll() {
+    void findAll_ListOfCustomerGiven_ShouldReturnCorrectLengthOfList() {
         // When
         Stream<Customer> customerStream = customerMapService.findAll();
 
@@ -46,11 +43,17 @@ class CustomerMapServiceTest {
     }
 
     @Test
-    void delete() {
+    void deleteById_OnlyUserRemovedFromList_ShouldResultInEmptyList() {
+        // When
+        customerMapService.deleteById(CUSTOMER_ONE_ID);
+        Stream<Customer> customerStream = customerMapService.findAll();
+
+        // Then
+        assertEquals(EMPTY, (Long) customerStream.count());
     }
 
     @Test
-    void saveExistingId() {
+    void save_CustomerWithIdGiven_ShouldReturnThisSameId() {
         // Given
         Customer customer2 = new Customer(CUSTOMER_TWO_ID, "Ed", new Address(1L, "A", "B", "1111"));
 
@@ -62,7 +65,7 @@ class CustomerMapServiceTest {
     }
 
     @Test
-    void saveNoId(){
+    void save_CustomerWithNoIdGiven_ShouldReturnCustomerWithGeneratedId(){
         // Given
         Customer customer2 = new Customer("Ed", new Address(1L, "A", "B", "1111"));
 
@@ -74,7 +77,7 @@ class CustomerMapServiceTest {
     }
 
     @Test
-    void findById() {
+    void findById_ListOfCustomersGiven_ShouldFindRequestedCustomer() {
         // When
         Customer customer = customerMapService.findById(CUSTOMER_ONE_ID).orElse(null);
 

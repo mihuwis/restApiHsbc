@@ -19,9 +19,7 @@ public class CustomerController {
 
     private final String REL_SELF = "self";
     private final String REL_CUSTOMER_BY_ID = "customersById";
-    private final String REL_CUSTOMERS_BY_NAME = "customersByName";
     private final String REL_ALL_CUSTOMERS = "findAllCustomers";
-
 
     private final CustomerService customerService;
 
