@@ -7,14 +7,14 @@ import java.util.stream.Stream;
 
 public abstract class AbstractMapService<ID extends Long, T extends BaseEntity> {
 
-    Map<Long, T> map = new HashMap<>();
+    Map<Long, T> inMemoryDB = new HashMap<>();
 
     Stream<T> findAll(){
-        return map.values().stream();
+        return inMemoryDB.values().stream();
     }
 
     Optional<T> findByID(ID id){
-        return map.values().stream()
+        return inMemoryDB.values().stream()
         .filter(value-> value.getId().equals(id))
                 .findFirst();
     }
@@ -22,7 +22,7 @@ public abstract class AbstractMapService<ID extends Long, T extends BaseEntity> 
     T save(T object){
         if(object != null){
             setIdInObject(object);
-            map.put(object.getId(), object);
+            inMemoryDB.put(object.getId(), object);
         } else {
             throw new NoSuchElementException("Object cannot be null");
         }
@@ -30,11 +30,11 @@ public abstract class AbstractMapService<ID extends Long, T extends BaseEntity> 
     }
 
     void delete(T object){
-        map.entrySet().removeIf(entry -> entry.getValue().equals(object));
+        inMemoryDB.entrySet().removeIf(entry -> entry.getValue().equals(object));
     }
 
     void deleteById(ID id){
-        map.entrySet().removeIf(entry -> entry.getValue().getId().equals(id));
+        inMemoryDB.entrySet().removeIf(entry -> entry.getValue().getId().equals(id));
     }
 
     private void setIdInObject(T object){
@@ -46,7 +46,7 @@ public abstract class AbstractMapService<ID extends Long, T extends BaseEntity> 
     private Long getNextIdNumber(){
         long id;
         try {
-            id = Collections.max(map.keySet()) + 1;
+            id = Collections.max(inMemoryDB.keySet()) + 1;
         } catch (NoSuchElementException e){
             id = 1L;
         }

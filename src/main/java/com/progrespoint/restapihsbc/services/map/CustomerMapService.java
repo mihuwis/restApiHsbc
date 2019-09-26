@@ -21,7 +21,7 @@ public class CustomerMapService extends AbstractMapService<Long, Customer> imple
 
     @Override
     public Optional<Customer> findByNameAndId(Long id, String name) {
-        return super.map.values()
+        return super.inMemoryDB.values()
                 .stream()
                 .filter(customer -> customer.getName().equals(name) && customer.getId().equals(id))
                 .findFirst();
@@ -29,7 +29,7 @@ public class CustomerMapService extends AbstractMapService<Long, Customer> imple
 
     @Override
     public Stream<Customer> findAllUsersWithName(String name) {
-        return super.map.values()
+        return super.inMemoryDB.values()
                 .stream()
                 .filter(customer -> customer.getName()
                         .equals(name));
