@@ -14,7 +14,7 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
 @RestController
-@RequestMapping(value = "/customers")
+@RequestMapping(value = "/customers", produces = "application/hal+json")
 public class CustomerController {
 
     private final String REL_SELF = "self";
