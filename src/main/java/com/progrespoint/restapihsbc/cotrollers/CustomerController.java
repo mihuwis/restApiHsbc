@@ -68,8 +68,13 @@ public class CustomerController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteCustomerById(@PathVariable Long id){
-        customerService.deleteById(id);
+    public ResponseEntity<Void> deleteCustomerById(@PathVariable Long id){
+        try{
+            customerService.deleteById(id);
+            return ResponseEntity.noContent().build();
+        } catch (Exception e ){
+            return ResponseEntity.notFound().build();
+        }
     }
 
     private Resource<Customer> resource(Customer customer){
