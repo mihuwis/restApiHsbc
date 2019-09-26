@@ -1,9 +1,11 @@
 package com.progrespoint.restapihsbc.cotrollers;
 
+import com.progrespoint.restapihsbc.exceptions.ResourceNotFoundException;
 import com.progrespoint.restapihsbc.model.Customer;
 import com.progrespoint.restapihsbc.services.CustomerService;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.Resources;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -68,13 +70,15 @@ public class CustomerController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteCustomerById(@PathVariable Long id){
-        try{
-            customerService.deleteById(id);
-            return ResponseEntity.noContent().build();
-        } catch (Exception e ){
-            return ResponseEntity.notFound().build();
+    public ResponseEntity<?> deleteCustomerById(@PathVariable Long id){
+        Customer customer = customerService.findById(id).orElse(null);
+        if(customer == null){
+            return new ResponseEntity<>(
+                    new ResourceNotFoundException("Customer no : " + id + " not found")
+                            .getMessage(), HttpStatus.NOT_FOUND);
         }
+        customerService.deleteById(id);
+        return new ResponseEntity<Customer>(HttpStatus.NO_CONTENT);
     }
 
     private Resource<Customer> resource(Customer customer){
