@@ -37,7 +37,6 @@ public abstract class AbstractMapService<ID extends Long, T extends BaseEntity> 
         map.entrySet().removeIf(entry -> entry.getValue().getId().equals(id));
     }
 
-
     private void setIdInObject(T object){
         if(object.getId() == null){
             object.setId(getNextIdNumber());

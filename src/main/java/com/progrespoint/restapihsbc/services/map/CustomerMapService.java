@@ -19,7 +19,6 @@ public class CustomerMapService extends AbstractMapService<Long, Customer> imple
         this.addressService = addressService;
     }
 
-
     @Override
     public Optional<Customer> findByNameAndId(Long id, String name) {
         return super.map.values()
@@ -51,8 +50,6 @@ public class CustomerMapService extends AbstractMapService<Long, Customer> imple
         super.delete(customer);
     }
 
-
-
     @Override
     public Customer save(Customer customer) {
         if(customer != null){
@@ -69,6 +66,5 @@ public class CustomerMapService extends AbstractMapService<Long, Customer> imple
     public Optional<Customer> findById(Long id) {
         return super.findByID(id);
     }
-
 
 }

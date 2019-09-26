@@ -8,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
@@ -51,15 +50,15 @@ public class CustomerController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @GetMapping(params = "name")
-    public ResponseEntity<Resources<Resource<Customer>>> getCustomersByName(@RequestParam("name") String name){
+    @GetMapping(value = "/name/{name}")
+    public ResponseEntity<Resources<Resource<Customer>>> getCustomersByName(@PathVariable("name") String name){
+
         Resources<Resource<Customer>> resources = new Resources<>(
                 customerService.findAllUsersWithName(name)
-                .map(this::resource)
-                .collect(Collectors.toList())
+                        .map(this::resource)
+                        .collect(Collectors.toList())
         );
         addFindAllCustomersLink(resources, REL_ALL_CUSTOMERS);
-//        addFindCustomersByName(resources, REL_SELF, name);
         return ok(resources);
     }
 
@@ -98,13 +97,5 @@ public class CustomerController {
         resources.add(linkTo(methodOn(CustomerController.class)
                 .getCustomerById(null)).withRel(rel));
     }
-
-    private void addFindCustomersByName(Resources<Resource<Customer>> resources, String rel, String name){
-        resources
-                .add(linkTo(methodOn(CustomerService.class)
-                        .findAllUsersWithName(name)).withRel(rel));
-    }
-
-
 
 }
