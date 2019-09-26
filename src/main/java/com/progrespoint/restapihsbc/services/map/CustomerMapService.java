@@ -37,6 +37,11 @@ public class CustomerMapService extends AbstractMapService<Long, Customer> imple
     }
 
     @Override
+    public void deleteById(Long id) {
+        super.deleteById(id);
+    }
+
+    @Override
     public Stream<Customer> findAll() {
         return super.findAll();
     }
@@ -45,6 +50,8 @@ public class CustomerMapService extends AbstractMapService<Long, Customer> imple
     public void delete(Customer customer) {
         super.delete(customer);
     }
+
+
 
     @Override
     public Customer save(Customer customer) {

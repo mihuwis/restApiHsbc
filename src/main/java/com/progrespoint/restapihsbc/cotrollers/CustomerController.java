@@ -70,6 +70,11 @@ public class CustomerController {
                 resource(addedCustomer).getLink(REL_SELF).getHref())).build();
     }
 
+    @DeleteMapping("/{id}")
+    public void deleteCustomerById(@PathVariable Long id){
+        customerService.deleteById(id);
+    }
+
     private Resource<Customer> resource(Customer customer){
         Resource<Customer> customerResource = new Resource<>(customer);
         customerResource

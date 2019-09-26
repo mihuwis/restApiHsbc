@@ -5,7 +5,6 @@ import com.progrespoint.restapihsbc.model.Customer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.security.acl.Owner;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -14,12 +13,14 @@ class CustomerMapServiceTest {
 
     private CustomerMapService customerMapService;
 
-    private final Long CUSTOMER_ID = 1L;
+    private final Long CUSTOMER_ONE_ID = 1L;
+    private final Long CUSTOMER_TWO_ID = 2L;
 
     @BeforeEach
     void setUp() {
         customerMapService = new CustomerMapService(new AddressMapService());
-        customerMapService.save(new Customer(1L, "Sam", new Address(CUSTOMER_ID, "B", "A", "111")));
+        customerMapService.save(
+                new Customer(CUSTOMER_ONE_ID, "Sam", new Address(1L, "B", "A", "111")));
     }
 
     @Test
@@ -41,7 +42,7 @@ class CustomerMapServiceTest {
         Stream<Customer> customerStream = customerMapService.findAll();
 
         // Then
-        assertEquals(CUSTOMER_ID, (Long) customerStream.count());
+        assertEquals(CUSTOMER_ONE_ID, (Long) customerStream.count());
     }
 
     @Test
@@ -50,31 +51,34 @@ class CustomerMapServiceTest {
 
     @Test
     void saveExistingId() {
-        Long id = 2L;
+        // Given
+        Customer customer2 = new Customer(CUSTOMER_TWO_ID, "Ed", new Address(1L, "A", "B", "1111"));
 
-        Customer customer2 = new Customer(id, "Ed", new Address(1L, "A", "B", "1111"));
-
+        // When
         Customer savedCustomer = customerMapService.save(customer2);
 
-        assertEquals(id, savedCustomer.getId());
+        // Then
+        assertEquals(CUSTOMER_TWO_ID, savedCustomer.getId());
     }
 
     @Test
     void saveNoId(){
-        Long id = 2L;
+        // Given
         Customer customer2 = new Customer("Ed", new Address(1L, "A", "B", "1111"));
 
+        // When
         Customer savedCustomer = customerMapService.save(customer2);
 
-        assertEquals(id, savedCustomer.getId());
+        // Then
+        assertEquals(CUSTOMER_TWO_ID, savedCustomer.getId());
     }
 
     @Test
     void findById() {
         // When
-        Customer customer = customerMapService.findById(CUSTOMER_ID).orElse(null);
+        Customer customer = customerMapService.findById(CUSTOMER_ONE_ID).orElse(null);
 
         // Then
-        assertEquals(CUSTOMER_ID, customer.getId());
+        assertEquals(CUSTOMER_ONE_ID, customer.getId());
     }
 }
