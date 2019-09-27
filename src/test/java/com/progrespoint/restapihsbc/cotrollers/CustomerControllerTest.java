@@ -55,15 +55,22 @@ class CustomerControllerTest {
     }
 
     @Test
-    void getCustomerById() {
+    void getCustomerById_CustomerGiven_ShouldReturnStatus200() throws Exception {
         // When
+        when(customerService.findById(1L)).thenReturn(optionalCustomer);
         // Then
+        mockMvc.perform(get("/api/v1/customers/1"))
+                .andExpect(status().is(200));
     }
 
     @Test
-    void getCustomersByName() {
+    void getCustomersByName_StreamOfCustomersGiven_ShouldReturnStatus200() throws Exception {
         // When
+        when(customerService.findAllUsersWithName("Sam"))
+                .thenReturn(customerStream);
         // Then
+        mockMvc.perform(get("/api/v1/customers/name/Sam"))
+                .andExpect(status().is(200));
     }
 
     @Test
