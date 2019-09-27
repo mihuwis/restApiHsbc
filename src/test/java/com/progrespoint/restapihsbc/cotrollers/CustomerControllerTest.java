@@ -45,23 +45,31 @@ class CustomerControllerTest {
     }
 
     @Test
-    void getAllCustomers() throws Exception {
+    void getAllCustomers_StreamOfCustomersGiven_ShouldReturnStatus200() throws Exception {
+        // When
         when(customerService.findAll()).thenReturn(customerStream);
 
+        // Then
         mockMvc.perform(get("/api/v1/customers"))
                 .andExpect(status().is(200));
     }
 
     @Test
     void getCustomerById() {
+        // When
+        // Then
     }
 
     @Test
     void getCustomersByName() {
+        // When
+        // Then
     }
 
     @Test
     void addCustomer() {
+        // When
+        // Then
     }
 
 }
