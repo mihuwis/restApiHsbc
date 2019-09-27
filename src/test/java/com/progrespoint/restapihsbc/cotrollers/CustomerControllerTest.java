@@ -1,27 +1,55 @@
 package com.progrespoint.restapihsbc.cotrollers;
 
-import com.progrespoint.restapihsbc.services.map.AddressMapService;
-import com.progrespoint.restapihsbc.services.map.CustomerMapService;
+import com.progrespoint.restapihsbc.model.Address;
+import com.progrespoint.restapihsbc.model.Customer;
+import com.progrespoint.restapihsbc.services.CustomerService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.Optional;
+import java.util.stream.Stream;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@ExtendWith(MockitoExtension.class)
 class CustomerControllerTest {
 
     private MockMvc mockMvc;
+
+    @Mock
+    private CustomerService customerService;
+
+    @InjectMocks
     private CustomerController customerController;
 
-    private static String BASE_PATH = "http://localhost/customers";
+    private Optional<Customer> optionalCustomer;
+    private Stream<Customer> customerStream;
 
     @BeforeEach
     void setUp() {
-        customerController = new CustomerController(new CustomerMapService(new AddressMapService()));
+        Customer customer1 = new Customer(1L, "Sam", new Address(1L, "A", "B", "C"));
+        Customer customer2 = new Customer(2L, "Eve", new Address(2L, "D", "E", "F"));
+        optionalCustomer = Optional.of(customer1);
+        customerStream = Stream.of(customer1, customer2);
+
+        mockMvc = MockMvcBuilders
+                .standaloneSetup(customerController)
+                .build();
     }
 
     @Test
-    void getAllCustomers() {
+    void getAllCustomers() throws Exception {
+        when(customerService.findAll()).thenReturn(customerStream);
+
+        mockMvc.perform(get("/api/v1/customers"))
+                .andExpect(status().is(200));
     }
 
     @Test
@@ -35,4 +63,5 @@ class CustomerControllerTest {
     @Test
     void addCustomer() {
     }
+
 }
